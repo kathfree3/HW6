@@ -4,16 +4,10 @@ const User = require('../models/user')
 
 const router = express.Router()
 
-router.get('/', (req, res) => {
-  console.log('hi')
-  res.send('idk')
-})
-
 router.post('/login', async (req, res) => {
   const { username, password } = req.body
   try {
     const user = await User.findOne({ username })
-    console.log(user)
     if (!user) {
       res.send('user doses not exist')
     } else {
@@ -21,14 +15,14 @@ router.post('/login', async (req, res) => {
       if (password === passDB) {
         req.session.username = username
         req.session.password = password
-        res.send('user logged in successfully')
+        res.send(`${username} logged in successfully`)
       } else {
-        res.send('user credentials are wrong')
+        res.send(`${username} credentials are wrong`)
       }
     }
   } catch (err) {
     console.log(err)
-    res.send('user creation has problems')
+    res.send('user log in has problems')
   }
 })
 

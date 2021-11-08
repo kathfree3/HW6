@@ -3,6 +3,7 @@ const session = require('cookie-session')
 const mongoose = require('mongoose')
 
 const accountRouter = require('./routes/account')
+const apiRouter = require('./routes/api')
 
 const app = express()
 
@@ -22,6 +23,7 @@ app.use(session({
 }))
 
 app.use('/account', accountRouter)
+app.use('/api/questions', apiRouter)
 
 app.listen(3000, () => {
   console.log('listening on 3000')
