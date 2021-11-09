@@ -1,18 +1,20 @@
-// routes that handle question updates
-// routes to handle the log in system
+// package imports
 const express = require('express')
-const Question = require('../models/question')
 
+// local imports
+const Question = require('../models/question')
+const isAuthenticated = require('../middlewares/isAuthenticated')
+
+// define router
 const router = express.Router()
 
 router.get('/', async (req, res) => {
   const questions = await Question.find()
-  console.log(questions)
-  res.send('getting all the questions')
+  res.send(questions)
 })
 
-router.post('/add', async (req, res) => {
-  const author = req.session.username
+router.post('/add', isAuthenticated, async (req, res) => {
+  const { username: author } = req.session
   const answer = ''
   const { questionText } = req.body
   try {
@@ -24,7 +26,7 @@ router.post('/add', async (req, res) => {
   }
 })
 
-router.post('/answer', async (req, res) => {
+router.post('/answer', isAuthenticated, async (req, res) => {
   const author = req.session.username
   res.send(`${author} trying to answer a post`)
 })

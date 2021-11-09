@@ -1,6 +1,7 @@
 // routes to handle the log in system
 const express = require('express')
 const User = require('../models/user')
+const isAuthenticated = require('../middlewares/isAuthenticated')
 
 const router = express.Router()
 
@@ -37,7 +38,7 @@ router.post('/signup', async (req, res) => {
   }
 })
 
-router.post('/logout', async (req, res) => {
+router.post('/logout', isAuthenticated, async (req, res) => {
   req.session.username = null
   req.session.password = null
   res.send('user is logged out')

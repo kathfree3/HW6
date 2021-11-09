@@ -1,8 +1,4 @@
-/*
-username which is of type String (username is the unique identifier)
-password which is of type String
-*/
-
+// package imports
 const mongoose = require('mongoose')
 
 const { Schema, model } = mongoose
