@@ -22,7 +22,6 @@ router.post('/login', async (req, res) => {
       }
     }
   } catch (err) {
-    console.log(err)
     res.send('user log in has problems')
   }
 })
@@ -33,7 +32,6 @@ router.post('/signup', async (req, res) => {
     await User.create({ username, password })
     res.send('user created')
   } catch (err) {
-    console.log(err)
     res.send('user creation has problems')
   }
 })

@@ -33,7 +33,7 @@ app.use('/account', accountRouter)
 app.use('/api/questions', apiRouter)
 
 app.use((err, req, res, next) => {
-  res.status(500).send('There was an error!')
+  res.status(500).send(err.message)
 })
 
 app.listen(3000, () => {

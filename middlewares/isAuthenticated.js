@@ -4,7 +4,7 @@ const isAuthenticated = (req, res, next) => {
   if (username && username !== '') { // allow request to continue
     next()
   } else { // throw error
-    next(new Error('Not logged in!'))
+    next(new Error('Cannot access because not logged in!'))
   }
 }
 
