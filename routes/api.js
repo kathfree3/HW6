@@ -1,6 +1,5 @@
 // package imports
 const express = require('express')
-const { ObjectId } = require('mongoose').Types
 
 // local imports
 const Question = require('../models/question')
@@ -9,27 +8,30 @@ const isAuthenticated = require('../middlewares/isAuthenticated')
 // define router
 const router = express.Router()
 
-router.get('/', async (req, res) => {
-  const questions = await Question.find()
-  res.send(questions)
-})
-
-router.post('/add', isAuthenticated, async (req, res) => {
-  const { username: author } = req.session
-  const { questionText } = req.body
+router.get('/', async (req, res, next) => {
   try {
-    await Question.create({ questionText, author })
-    res.send('question created')
+    const questions = await Question.find()
+    res.send(questions)
   } catch (err) {
-    res.send('post creation has problems')
+    next(new Error('issue getting qusetions'))
   }
 })
 
-router.post('/answer', isAuthenticated, async (req, res) => {
+router.post('/add', isAuthenticated, async (req, res, next) => {
+  const { username: author } = req.session
+  const { questionText } = req.body
+  const answer = ' '
+  try {
+    await Question.create({ questionText, answer, author })
+    res.send('question created')
+  } catch (err) {
+    next(new Error('post creation has problems'))
+  }
+})
+
+router.post('/answer', isAuthenticated, async (req, res, next) => {
   const { _id, answer } = req.body
-  if (!ObjectId.isValid(_id)) {
-    res.send('Illegal question id')
-  } else {
+  try {
     const question = await Question.findById({ _id })
     if (!question) {
       res.send("Trying to answer a question that doesn't exist")
@@ -40,6 +42,8 @@ router.post('/answer', isAuthenticated, async (req, res) => {
         res.send(msg)
       })
     }
+  } catch (err) {
+    next(new Error('Answering question issues'))
   }
 })
 
