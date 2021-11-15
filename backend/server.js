@@ -19,6 +19,8 @@ mongoose.connect(MONGO_URI, {
   useUnifiedTopology: true,
 })
 
+app.use(express.static('dist'))
+
 // use json parser
 app.use(express.json())
 
