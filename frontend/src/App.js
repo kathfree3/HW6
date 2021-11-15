@@ -1,7 +1,22 @@
 import React from 'react'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from 'react-router-dom'
+
+import Login from './Login'
+import Signup from './SignUp'
+import Home from './Home'
 
 const App = () => (
-  <h1>Your react app!</h1>
+  <Router>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+    </Routes>
+  </Router>
 )
 
 export default App

@@ -10,15 +10,14 @@ router.post('/login', async (req, res, next) => {
   try {
     const user = await User.findOne({ username })
     if (!user) {
-      res.send('user doses not exist')
+      res.send({ success: false, msg: "This username doesn't exist" })
     } else {
       const { password: passDB } = user
       if (password === passDB) {
         req.session.username = username
-        req.session.password = password
-        res.send(`${username} logged in successfully`)
+        res.send({ success: true })
       } else {
-        res.send(`${username} credentials are wrong`)
+        res.send({ success: false, msg: 'wrong password' })
       }
     }
   } catch (err) {
@@ -30,7 +29,8 @@ router.post('/signup', async (req, res, next) => {
   const { username, password } = req.body
   try {
     await User.create({ username, password })
-    res.send('user created')
+    req.session.username = username
+    res.send({ success: true })
   } catch (err) {
     next(new Error('user creation has problems'))
   }
@@ -39,7 +39,16 @@ router.post('/signup', async (req, res, next) => {
 router.post('/logout', isAuthenticated, async (req, res, next) => {
   req.session.username = null
   req.session.password = null
-  res.send('user is logged out')
+  res.send({ success: true })
+  next()
+})
+
+router.get('/isloggedin', (req, res) => {
+  if (req.session.username !== null && req.session.username !== '') {
+    res.send({ user: req.session.username })
+  } else {
+    res.send({ loggedin: false })
+  }
 })
 
 module.exports = router
