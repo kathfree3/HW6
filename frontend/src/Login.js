@@ -11,12 +11,8 @@ const Login = () => {
 
   const submit = async () => {
     const { data } = await axios.post('/account/login', { username, password })
-    if (data.success) {
-      navigate('/')
-    } else {
-      // eslint-disable-next-line no-alert
-      alert(data.msg)
-    }
+    // eslint-disable-next-line no-alert
+    return data.success ? navigate('/') : alert(data.msg)
   }
   return (
     <div>

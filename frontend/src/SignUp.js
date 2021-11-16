@@ -10,13 +10,16 @@ const SignUp = () => {
   const navigate = useNavigate()
 
   const submit = async () => {
-    const { data } = await axios.post('/account/signup', { username, password })
-    if (data.success) {
-      navigate('/')
-    } else {
-      // eslint-disable-next-line no-alert
-      alert(data.msg)
-    }
+    await axios.post('/account/signup', { username, password })
+      .then(() => {
+        navigate('/')
+      })
+      .catch(err => {
+        if (err.response.data === 11000) {
+          // eslint-disable-next-line no-alert
+          alert('This username already exists')
+        }
+      })
   }
 
   return (

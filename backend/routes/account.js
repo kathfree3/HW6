@@ -30,9 +30,13 @@ router.post('/signup', async (req, res, next) => {
   try {
     await User.create({ username, password })
     req.session.username = username
-    res.send({ success: true })
+    res.send('valid')
   } catch (err) {
-    next(new Error('user creation has problems'))
+    if (err.code === 11000) {
+      next(new Error(11000))
+    } else {
+      next(new Error('user creation has problems'))
+    }
   }
 })
 

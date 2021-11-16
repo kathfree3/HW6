@@ -13,7 +13,7 @@ router.get('/', async (req, res, next) => {
     const questions = await Question.find()
     res.send(questions)
   } catch (err) {
-    next(new Error('issue getting qusetions'))
+    next(new Error('issue getting questions from db'))
   }
 })
 
@@ -38,8 +38,11 @@ router.post('/answer', isAuthenticated, async (req, res, next) => {
     } else {
       question.answer = answer
       question.save(err => {
-        const msg = err ? 'Issue with answering question' : 'answered successfully'
-        res.send(msg)
+        if (err) {
+          res.send({ errmsg: 'Issue with answering question' })
+        } else {
+          res.send({ msg: 'answered successfully' })
+        }
       })
     }
   } catch (err) {
