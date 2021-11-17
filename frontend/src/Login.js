@@ -3,6 +3,11 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
+// local imports
+import {
+  PrettyButton, Form, Label, Input, FullPage,
+} from '../GlobalStyles'
+
 const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -15,16 +20,21 @@ const Login = () => {
     return data.success ? navigate('/') : alert(data.msg)
   }
   return (
-    <div>
-      <h2>Log in</h2>
-      <form>
-        <input value={username} type="text" onChange={e => setUsername(e.target.value)} />
-        <input value={password} type="text" onChange={e => setPassword(e.target.value)} />
-      </form>
-      <button type="button" onClick={() => submit()}> Login </button>
-      Dont have an account?
-      <Link to="/signup">Sign up!</Link>
-    </div>
+    <FullPage>
+      <Form>
+        <h2>Log in</h2>
+        <Label> Username: </Label>
+        <Input value={username} type="text" onChange={e => setUsername(e.target.value)} />
+        <Label> Password: </Label>
+        <Input value={password} type="text" onChange={e => setPassword(e.target.value)} />
+        <PrettyButton type="button" onClick={() => submit()}> Login </PrettyButton>
+        <p>
+          Dont have an account?
+          {' '}
+          <Link to="/signup">Sign up!</Link>
+        </p>
+      </Form>
+    </FullPage>
   )
 }
 

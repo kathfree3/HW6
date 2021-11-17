@@ -7,8 +7,15 @@ import s from 'styled-components'
 import { PrettyButton } from '../GlobalStyles'
 import NewQuestion from './NewQuestion'
 
-const QuestionSideBar = ({ questions, loggedin, setSelectedQ }) => {
+const QuestionSideBar = ({
+  loggedin, questions, setSelectedQ, setSelectedIndex,
+}) => {
   const navigate = useNavigate()
+
+  const click = (q, ind) => {
+    setSelectedQ(q)
+    setSelectedIndex(ind)
+  }
 
   return (
     <SideBar>
@@ -16,9 +23,9 @@ const QuestionSideBar = ({ questions, loggedin, setSelectedQ }) => {
         ? (
           <NewQuestion />
         )
-        : (<PrettyButton onClick={() => navigate('/login')}>Log in here!</PrettyButton>)}
-      {questions.map(q => (
-        <QuestionTitle onClick={() => setSelectedQ(q)} key={q._id}>
+        : (<PrettyButton onClick={() => navigate('/login')}>Log in to submit a question!</PrettyButton>)}
+      {questions && questions.map((q, ind) => (
+        <QuestionTitle onClick={() => click(q, ind)} key={q._id}>
           {q.questionText}
         </QuestionTitle>
       ))}
@@ -42,4 +49,5 @@ const QuestionTitle = s.button`
 const SideBar = s.div`
   display: flex;
   flex-direction: column;
+  width: 40%;
 `

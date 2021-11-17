@@ -7,20 +7,38 @@ import s from 'styled-components'
 // local imports
 import QuestionSideBar from './QuestionSideBar'
 import ViewQuestion from './ViewQuestion'
+import {
+  FullPage,
+} from '../GlobalStyles'
 
 const Home = () => {
   const [questions, setQuestions] = useState([])
   const [loggedin, setLoggedin] = useState(false)
-  const [selectedQ, setSelectedQ] = useState({})
+  const [selectedQ, setSelectedQ] = useState(null)
+  const [selectedIndex, setSelectedIndex] = useState(0)
 
   const navigate = useNavigate()
 
-  useEffect(async () => {
-    const { data: qs } = await axios.get('/api/questions')
-    setQuestions(qs)
-    setSelectedQ(qs[0])
-    const { data: l } = await axios.get('/account/isloggedin')
-    setLoggedin(l.user)
+  // async func to call to get questions
+  const getQuestions = async () => {
+    const { data } = await axios.get('/api/questions')
+    setQuestions(data)
+    setSelectedQ(data[selectedIndex])
+  }
+
+  useEffect(() => {
+    // get questions every 2 seconds
+    getQuestions()
+    const intervalID = setInterval(() => {
+      getQuestions()
+    }, 2000)
+    // fetch user logged in
+    const fetchUser = async () => {
+      const { data: l } = await axios.get('/account/isloggedin')
+      setLoggedin(l.user)
+    }
+    fetchUser()
+    return () => clearInterval(intervalID)
   }, [])
 
   const logout = async () => {
@@ -29,7 +47,8 @@ const Home = () => {
   }
 
   return (
-    <FullPage>
+    <Wrapper>
+      {selectedIndex}
       <Title>
         <h1>Campuswire Lite</h1>
         {loggedin
@@ -43,10 +62,15 @@ const Home = () => {
             )}
       </Title>
       <Page>
-        <QuestionSideBar questions={questions} loggedin={loggedin} setSelectedQ={setSelectedQ} />
-        <ViewQuestion loggedin={loggedin} selectedQ={selectedQ} />
+        <QuestionSideBar
+          loggedin={loggedin}
+          questions={questions}
+          setSelectedQ={setSelectedQ}
+          setSelectedIndex={setSelectedIndex}
+        />
+        {selectedQ && <ViewQuestion loggedin={loggedin} selectedQ={questions[selectedIndex]} />}
       </Page>
-    </FullPage>
+    </Wrapper>
   )
 }
 
@@ -54,13 +78,15 @@ export default Home
 
 const Page = s.div`
   display: flex;
+  column-gap: 30px;
 `
-const FullPage = s.div`
+const Wrapper = s(FullPage)`
   padding: 1rem;
   background: #e9eff0;
 `
 const Title = s.div`
   display: flex;
+  background: white;
   h1 {
     display: flex;
     flex-direction: row;
