@@ -7,23 +7,20 @@ import s from 'styled-components'
 // local imports
 import QuestionSideBar from './QuestionSideBar'
 import ViewQuestion from './ViewQuestion'
-import {
-  FullPage,
-} from '../GlobalStyles'
+import { FullPage } from '../GlobalStyles'
 
 const Home = () => {
   const [questions, setQuestions] = useState([])
   const [loggedin, setLoggedin] = useState(false)
-  const [selectedQ, setSelectedQ] = useState(null)
   const [selectedIndex, setSelectedIndex] = useState(0)
 
+  const msg = `Hi ${loggedin} `
   const navigate = useNavigate()
 
   // async func to call to get questions
   const getQuestions = async () => {
     const { data } = await axios.get('/api/questions')
     setQuestions(data)
-    setSelectedQ(data[selectedIndex])
   }
 
   useEffect(() => {
@@ -48,15 +45,12 @@ const Home = () => {
 
   return (
     <Wrapper>
-      {selectedIndex}
       <Title>
         <h1>Campuswire Lite</h1>
         {loggedin
             && (
             <LogOut>
-              Hi
-              {' '}
-              {loggedin}
+              {msg}
               <button type="button" onClick={() => logout()}> Log out </button>
             </LogOut>
             )}
@@ -65,10 +59,9 @@ const Home = () => {
         <QuestionSideBar
           loggedin={loggedin}
           questions={questions}
-          setSelectedQ={setSelectedQ}
           setSelectedIndex={setSelectedIndex}
         />
-        {selectedQ && <ViewQuestion loggedin={loggedin} selectedQ={questions[selectedIndex]} />}
+        {questions.length !== 0 && <ViewQuestion loggedin={loggedin} selectedQ={questions[selectedIndex]} />}
       </Page>
     </Wrapper>
   )
@@ -87,14 +80,16 @@ const Wrapper = s(FullPage)`
 const Title = s.div`
   display: flex;
   background: white;
-  h1 {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    align-items: center;
-  }
+  align-items: center;
+
 `
 
-const LogOut = s.p`
+const LogOut = s.div`
   margin-left: auto;
+  button {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    color: #069;
+  }
 `

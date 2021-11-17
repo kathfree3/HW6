@@ -1,5 +1,5 @@
 // package imports
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 import Modal from 'react-bootstrap/Modal'
 
@@ -9,10 +9,17 @@ const NewQuestion = () => {
   const [questionText, setQuestionText] = useState('')
   const [show, setShow] = useState(false)
 
+  // reset if you close it
+  const close = () => {
+    setShow(false)
+    setQuestionText('')
+  }
+
+  // create new post
   const submit = async () => {
     const { data } = await axios.post('/api/questions/add', { questionText })
     if (data) {
-      setShow(false)
+      close()
     }
   }
 
@@ -21,21 +28,19 @@ const NewQuestion = () => {
       <PrettyButton type="button" onClick={() => setShow(true)}>
         Add new question +
       </PrettyButton>
-      <Modal centered show={show} onHide={() => setShow(false)} animation={false}>
+      <Modal centered show={show} onHide={() => close()} animation={false}>
         <Modal.Header closeButton>
           <Modal.Title>Add Question</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <textarea style={{ minWidth: '100%' }} value={questionText} onChange={e => setQuestionText(e.target.value)} />
-        </Modal.Body>
-        <Modal.Footer>
-          <PrettyButton type="button" onClick={() => setShow(false)}>
+          <PrettyButton type="button" onClick={() => submit()}>
+            Submit Question
+          </PrettyButton>
+          <PrettyButton type="button" onClick={() => close()}>
             Close
           </PrettyButton>
-          <PrettyButton type="button" onClick={() => submit()}>
-            Save Changes
-          </PrettyButton>
-        </Modal.Footer>
+        </Modal.Body>
       </Modal>
     </>
   )
