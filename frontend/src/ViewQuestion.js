@@ -1,26 +1,19 @@
 // package imports
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 import s from 'styled-components'
 
-const ViewQuestion = ({
-  selectedQ,
-}) => {
+const ViewQuestion = ({ selectedQ, loggedin }) => {
   const [newAnswer, setAnswer] = useState('')
-  const [loggedin, setLoggedin] = useState(false)
+
   const {
     questionText, answer, author, _id,
   } = selectedQ
 
-  useEffect(async () => {
-    const { data: l } = await axios.get('/account/isloggedin')
-    setLoggedin(l.user)
-  }, [])
-
   const submitAnswer = async () => {
     const { data } = await axios.post('/api/questions/answer', { _id, answer: newAnswer })
-    // eslint-disable-next-line no-alert
     if (data.errmsg) {
+      // eslint-disable-next-line no-alert
       alert(data.errmsg)
     }
   }
@@ -54,16 +47,17 @@ const ViewQuestion = ({
 export default ViewQuestion
 
 const QInfo = s.div`
-background: white;
+  background: white;
 `
 const Wrapper = s.div`
-display: flex;
-flex-direction: column;
-width: 80%;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
 `
 
 const AnswerPlace = s.div`
-display: flex;
+  display: flex;
+  flex-direction: column;
 `
 const PrettyButton = s.button`
   padding: 0.5rem;

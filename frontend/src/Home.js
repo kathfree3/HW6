@@ -1,6 +1,6 @@
 // package imports
 import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import s from 'styled-components'
 
@@ -43,8 +43,8 @@ const Home = () => {
             )}
       </Title>
       <Page>
-        <QuestionSideBar setSelectedQ={setSelectedQ} />
-        <ViewQuestion selectedQ={selectedQ} />
+        <QuestionSideBar questions={questions} loggedin={loggedin} setSelectedQ={setSelectedQ} />
+        <ViewQuestion loggedin={loggedin} selectedQ={selectedQ} />
       </Page>
     </FullPage>
   )
@@ -60,13 +60,13 @@ const FullPage = s.div`
   background: #e9eff0;
 `
 const Title = s.div`
-display: flex;
-h1 {
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  align-items: center;
-}
+  h1 {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+  }
 `
 
 const LogOut = s.p`
