@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import s from 'styled-components'
 
 // local imports
-import { PrettyButton } from '../GlobalStyles'
+import { Button } from '../GlobalStyles'
 import NewQuestion from './NewQuestion'
 
 const QuestionSideBar = ({
@@ -14,11 +14,8 @@ const QuestionSideBar = ({
 
   return (
     <SideBar>
-      {loggedin
-        ? (
-          <NewQuestion />
-        )
-        : (<PrettyButton onClick={() => navigate('/login')}>Log in to submit a question!</PrettyButton>)}
+      {loggedin ? <NewQuestion />
+        : (<Button onClick={() => navigate('/login')}>Log in to submit a question!</Button>)}
       {questions && questions.map((q, ind) => (
         <QuestionTitle onClick={() => setSelectedIndex(ind)} key={q._id}>
           {q.questionText}

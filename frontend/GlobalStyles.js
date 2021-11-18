@@ -1,6 +1,6 @@
 import s from 'styled-components'
 
-export const PrettyButton = s.button`
+export const Button = s.button`
     padding: 0.5rem;
     margin: 0.5rem;
     background: #696eb3;

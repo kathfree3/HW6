@@ -5,7 +5,7 @@ import axios from 'axios'
 
 // local imports
 import {
-  PrettyButton, Form, Label, Input, FullPage,
+  Button, Form, Label, Input, FullPage,
 } from '../GlobalStyles'
 
 const SignUp = () => {
@@ -35,7 +35,7 @@ const SignUp = () => {
         <Input value={username} type="text" onChange={e => setUsername(e.target.value)} />
         <Label> Password: </Label>
         <Input value={password} type="text" onChange={e => setPassword(e.target.value)} />
-        <PrettyButton type="button" onClick={() => submit()}> Sign up! </PrettyButton>
+        <Button type="button" onClick={() => submit()}> Sign up! </Button>
         <p>
           Already have an account?
           {' '}

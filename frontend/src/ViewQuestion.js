@@ -3,6 +3,9 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import s from 'styled-components'
 
+// local imports
+import { Button } from '../GlobalStyles'
+
 const ViewQuestion = ({ loggedin, selectedQ }) => {
   const [newAnswer, setAnswer] = useState('')
 
@@ -26,19 +29,15 @@ const ViewQuestion = ({ loggedin, selectedQ }) => {
           {questionText}
         </h3>
         <p><b> Author: </b></p>
-        <p>
-          {author}
-        </p>
+        {author}
         <p><b> Answer: </b></p>
-        <p>
-          {answer}
-        </p>
+        {answer}
       </QInfo>
       {loggedin && (
         <AnswerPlace>
           <p> Answer this question</p>
           <textarea rows="4" value={newAnswer} onChange={e => setAnswer(e.target.value)} />
-          <PrettyButton onClick={() => submitAnswer()}> Submit Answer </PrettyButton>
+          <Button onClick={() => submitAnswer()}> Submit Answer </Button>
         </AnswerPlace>
       )}
     </Wrapper>
@@ -62,12 +61,4 @@ const Wrapper = s.div`
 const AnswerPlace = s.div`
   display: flex;
   flex-direction: column;
-`
-const PrettyButton = s.button`
-  padding: 0.5rem;
-  margin: 0.5rem;
-  background: #696eb3;
-  color: white;
-  border: solid 1px #dbdbdb;
-  border-radius: 5px;
 `

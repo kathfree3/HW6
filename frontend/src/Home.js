@@ -17,23 +17,21 @@ const Home = () => {
   const msg = `Hi ${loggedin} `
   const navigate = useNavigate()
 
-  // async func to call to get questions
+  // async function calls
   const getQuestions = async () => {
     const { data } = await axios.get('/api/questions')
     setQuestions(data)
   }
+  const fetchUser = async () => {
+    const { data: l } = await axios.get('/account/isloggedin')
+    setLoggedin(l.user)
+  }
 
   useEffect(() => {
-    // get questions every 2 seconds
     getQuestions()
     const intervalID = setInterval(() => {
-      getQuestions()
+      getQuestions() // get questions every 2 seconds
     }, 2000)
-    // fetch user logged in
-    const fetchUser = async () => {
-      const { data: l } = await axios.get('/account/isloggedin')
-      setLoggedin(l.user)
-    }
     fetchUser()
     return () => clearInterval(intervalID)
   }, [])
@@ -69,6 +67,7 @@ const Home = () => {
 
 export default Home
 
+// STYLED COMPONENTS
 const Page = s.div`
   display: flex;
   column-gap: 30px;
@@ -83,7 +82,6 @@ const Title = s.div`
   align-items: center;
 
 `
-
 const LogOut = s.div`
   margin-left: auto;
   button {

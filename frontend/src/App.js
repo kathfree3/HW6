@@ -1,10 +1,8 @@
+// package imports
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
+// local imports
 import Login from './Login'
 import Signup from './SignUp'
 import Home from './Home'

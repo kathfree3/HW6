@@ -5,7 +5,7 @@ import axios from 'axios'
 
 // local imports
 import {
-  PrettyButton, Form, Label, Input, FullPage,
+  Button, Form, Label, Input, FullPage,
 } from '../GlobalStyles'
 
 const Login = () => {
@@ -19,6 +19,7 @@ const Login = () => {
     // eslint-disable-next-line no-alert
     return data.success ? navigate('/') : alert(data.msg)
   }
+
   return (
     <FullPage>
       <Form>
@@ -27,7 +28,7 @@ const Login = () => {
         <Input value={username} type="text" onChange={e => setUsername(e.target.value)} />
         <Label> Password: </Label>
         <Input value={password} type="text" onChange={e => setPassword(e.target.value)} />
-        <PrettyButton type="button" onClick={() => submit()}> Login </PrettyButton>
+        <Button type="button" onClick={() => submit()}> Login </Button>
         <p>
           Dont have an account?
           {' '}
